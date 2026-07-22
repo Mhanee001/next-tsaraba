@@ -21,7 +21,8 @@ import { useMyRoles } from "@/hooks/use-role";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 
-const NAV = [
+type NavItem = { to: string; label: string; icon: React.ComponentType<{ className?: string }>; soon?: boolean };
+const NAV: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/sales", label: "Sales", icon: ShoppingCart },
   { to: "/agents", label: "Agents", icon: Users },
@@ -30,7 +31,7 @@ const NAV = [
   { to: "/expenses", label: "Expenses", icon: Receipt, soon: true },
   { to: "/reconciliation", label: "Cash", icon: Wallet, soon: true },
   { to: "/reports", label: "Reports", icon: BarChart3, soon: true },
-] as const;
+];
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const { user } = useAuth();
