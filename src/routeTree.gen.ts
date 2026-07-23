@@ -15,6 +15,9 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAgentsRouteImport } from './routes/_authenticated/agents'
 import { Route as AuthenticatedAuditLogRouteImport } from './routes/_authenticated/audit-log'
 import { Route as AuthenticatedCashFlowRouteImport } from './routes/_authenticated/cash-flow'
+import { Route as AuthenticatedCashFlowByPersonRouteImport } from './routes/_authenticated/cash-flow-by-person'
+import { Route as AuthenticatedCashSummaryRouteImport } from './routes/_authenticated/cash-summary'
+import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedExpensesRouteImport } from './routes/_authenticated/expenses'
 import { Route as AuthenticatedFactorySalesRouteImport } from './routes/_authenticated/factory-sales'
@@ -24,10 +27,13 @@ import { Route as AuthenticatedMaterialsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedPrintingRouteImport } from './routes/_authenticated/printing'
 import { Route as AuthenticatedProFormRouteImport } from './routes/_authenticated/pro-form'
 import { Route as AuthenticatedProductionRouteImport } from './routes/_authenticated/production'
+import { Route as AuthenticatedProductionReportRouteImport } from './routes/_authenticated/production-report'
 import { Route as AuthenticatedReconciliationRouteImport } from './routes/_authenticated/reconciliation'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSalesRouteImport } from './routes/_authenticated/sales'
+import { Route as AuthenticatedStockInventoryRouteImport } from './routes/_authenticated/stock-inventory'
 import { Route as AuthenticatedAgentsIdRouteImport } from './routes/_authenticated/agents.$id'
+import { Route as AuthenticatedCustomersIdRouteImport } from './routes/_authenticated/customers.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -56,6 +62,23 @@ const AuthenticatedAuditLogRoute = AuthenticatedAuditLogRouteImport.update({
 const AuthenticatedCashFlowRoute = AuthenticatedCashFlowRouteImport.update({
   id: '/cash-flow',
   path: '/cash-flow',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCashFlowByPersonRoute =
+  AuthenticatedCashFlowByPersonRouteImport.update({
+    id: '/cash-flow-by-person',
+    path: '/cash-flow-by-person',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCashSummaryRoute =
+  AuthenticatedCashSummaryRouteImport.update({
+    id: '/cash-summary',
+    path: '/cash-summary',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCustomersRoute = AuthenticatedCustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -106,6 +129,12 @@ const AuthenticatedProductionRoute = AuthenticatedProductionRouteImport.update({
   path: '/production',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedProductionReportRoute =
+  AuthenticatedProductionReportRouteImport.update({
+    id: '/production-report',
+    path: '/production-report',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedReconciliationRoute =
   AuthenticatedReconciliationRouteImport.update({
     id: '/reconciliation',
@@ -122,11 +151,23 @@ const AuthenticatedSalesRoute = AuthenticatedSalesRouteImport.update({
   path: '/sales',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStockInventoryRoute =
+  AuthenticatedStockInventoryRouteImport.update({
+    id: '/stock-inventory',
+    path: '/stock-inventory',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAgentsIdRoute = AuthenticatedAgentsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AuthenticatedAgentsRoute,
 } as any)
+const AuthenticatedCustomersIdRoute =
+  AuthenticatedCustomersIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedCustomersRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,6 +175,9 @@ export interface FileRoutesByFullPath {
   '/agents': typeof AuthenticatedAgentsRouteWithChildren
   '/audit-log': typeof AuthenticatedAuditLogRoute
   '/cash-flow': typeof AuthenticatedCashFlowRoute
+  '/cash-flow-by-person': typeof AuthenticatedCashFlowByPersonRoute
+  '/cash-summary': typeof AuthenticatedCashSummaryRoute
+  '/customers': typeof AuthenticatedCustomersRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
   '/factory-sales': typeof AuthenticatedFactorySalesRoute
@@ -143,10 +187,13 @@ export interface FileRoutesByFullPath {
   '/printing': typeof AuthenticatedPrintingRoute
   '/pro-form': typeof AuthenticatedProFormRoute
   '/production': typeof AuthenticatedProductionRoute
+  '/production-report': typeof AuthenticatedProductionReportRoute
   '/reconciliation': typeof AuthenticatedReconciliationRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/sales': typeof AuthenticatedSalesRoute
+  '/stock-inventory': typeof AuthenticatedStockInventoryRoute
   '/agents/$id': typeof AuthenticatedAgentsIdRoute
+  '/customers/$id': typeof AuthenticatedCustomersIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -154,6 +201,9 @@ export interface FileRoutesByTo {
   '/agents': typeof AuthenticatedAgentsRouteWithChildren
   '/audit-log': typeof AuthenticatedAuditLogRoute
   '/cash-flow': typeof AuthenticatedCashFlowRoute
+  '/cash-flow-by-person': typeof AuthenticatedCashFlowByPersonRoute
+  '/cash-summary': typeof AuthenticatedCashSummaryRoute
+  '/customers': typeof AuthenticatedCustomersRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
   '/factory-sales': typeof AuthenticatedFactorySalesRoute
@@ -163,10 +213,13 @@ export interface FileRoutesByTo {
   '/printing': typeof AuthenticatedPrintingRoute
   '/pro-form': typeof AuthenticatedProFormRoute
   '/production': typeof AuthenticatedProductionRoute
+  '/production-report': typeof AuthenticatedProductionReportRoute
   '/reconciliation': typeof AuthenticatedReconciliationRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/sales': typeof AuthenticatedSalesRoute
+  '/stock-inventory': typeof AuthenticatedStockInventoryRoute
   '/agents/$id': typeof AuthenticatedAgentsIdRoute
+  '/customers/$id': typeof AuthenticatedCustomersIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -176,6 +229,9 @@ export interface FileRoutesById {
   '/_authenticated/agents': typeof AuthenticatedAgentsRouteWithChildren
   '/_authenticated/audit-log': typeof AuthenticatedAuditLogRoute
   '/_authenticated/cash-flow': typeof AuthenticatedCashFlowRoute
+  '/_authenticated/cash-flow-by-person': typeof AuthenticatedCashFlowByPersonRoute
+  '/_authenticated/cash-summary': typeof AuthenticatedCashSummaryRoute
+  '/_authenticated/customers': typeof AuthenticatedCustomersRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/expenses': typeof AuthenticatedExpensesRoute
   '/_authenticated/factory-sales': typeof AuthenticatedFactorySalesRoute
@@ -185,10 +241,13 @@ export interface FileRoutesById {
   '/_authenticated/printing': typeof AuthenticatedPrintingRoute
   '/_authenticated/pro-form': typeof AuthenticatedProFormRoute
   '/_authenticated/production': typeof AuthenticatedProductionRoute
+  '/_authenticated/production-report': typeof AuthenticatedProductionReportRoute
   '/_authenticated/reconciliation': typeof AuthenticatedReconciliationRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/sales': typeof AuthenticatedSalesRoute
+  '/_authenticated/stock-inventory': typeof AuthenticatedStockInventoryRoute
   '/_authenticated/agents/$id': typeof AuthenticatedAgentsIdRoute
+  '/_authenticated/customers/$id': typeof AuthenticatedCustomersIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -198,6 +257,9 @@ export interface FileRouteTypes {
     | '/agents'
     | '/audit-log'
     | '/cash-flow'
+    | '/cash-flow-by-person'
+    | '/cash-summary'
+    | '/customers'
     | '/dashboard'
     | '/expenses'
     | '/factory-sales'
@@ -207,10 +269,13 @@ export interface FileRouteTypes {
     | '/printing'
     | '/pro-form'
     | '/production'
+    | '/production-report'
     | '/reconciliation'
     | '/reports'
     | '/sales'
+    | '/stock-inventory'
     | '/agents/$id'
+    | '/customers/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -218,6 +283,9 @@ export interface FileRouteTypes {
     | '/agents'
     | '/audit-log'
     | '/cash-flow'
+    | '/cash-flow-by-person'
+    | '/cash-summary'
+    | '/customers'
     | '/dashboard'
     | '/expenses'
     | '/factory-sales'
@@ -227,10 +295,13 @@ export interface FileRouteTypes {
     | '/printing'
     | '/pro-form'
     | '/production'
+    | '/production-report'
     | '/reconciliation'
     | '/reports'
     | '/sales'
+    | '/stock-inventory'
     | '/agents/$id'
+    | '/customers/$id'
   id:
     | '__root__'
     | '/'
@@ -239,6 +310,9 @@ export interface FileRouteTypes {
     | '/_authenticated/agents'
     | '/_authenticated/audit-log'
     | '/_authenticated/cash-flow'
+    | '/_authenticated/cash-flow-by-person'
+    | '/_authenticated/cash-summary'
+    | '/_authenticated/customers'
     | '/_authenticated/dashboard'
     | '/_authenticated/expenses'
     | '/_authenticated/factory-sales'
@@ -248,10 +322,13 @@ export interface FileRouteTypes {
     | '/_authenticated/printing'
     | '/_authenticated/pro-form'
     | '/_authenticated/production'
+    | '/_authenticated/production-report'
     | '/_authenticated/reconciliation'
     | '/_authenticated/reports'
     | '/_authenticated/sales'
+    | '/_authenticated/stock-inventory'
     | '/_authenticated/agents/$id'
+    | '/_authenticated/customers/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -302,6 +379,27 @@ declare module '@tanstack/react-router' {
       path: '/cash-flow'
       fullPath: '/cash-flow'
       preLoaderRoute: typeof AuthenticatedCashFlowRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-flow-by-person': {
+      id: '/_authenticated/cash-flow-by-person'
+      path: '/cash-flow-by-person'
+      fullPath: '/cash-flow-by-person'
+      preLoaderRoute: typeof AuthenticatedCashFlowByPersonRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-summary': {
+      id: '/_authenticated/cash-summary'
+      path: '/cash-summary'
+      fullPath: '/cash-summary'
+      preLoaderRoute: typeof AuthenticatedCashSummaryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/customers': {
+      id: '/_authenticated/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof AuthenticatedCustomersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -367,6 +465,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductionRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/production-report': {
+      id: '/_authenticated/production-report'
+      path: '/production-report'
+      fullPath: '/production-report'
+      preLoaderRoute: typeof AuthenticatedProductionReportRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/reconciliation': {
       id: '/_authenticated/reconciliation'
       path: '/reconciliation'
@@ -388,12 +493,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/stock-inventory': {
+      id: '/_authenticated/stock-inventory'
+      path: '/stock-inventory'
+      fullPath: '/stock-inventory'
+      preLoaderRoute: typeof AuthenticatedStockInventoryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/agents/$id': {
       id: '/_authenticated/agents/$id'
       path: '/$id'
       fullPath: '/agents/$id'
       preLoaderRoute: typeof AuthenticatedAgentsIdRouteImport
       parentRoute: typeof AuthenticatedAgentsRoute
+    }
+    '/_authenticated/customers/$id': {
+      id: '/_authenticated/customers/$id'
+      path: '/$id'
+      fullPath: '/customers/$id'
+      preLoaderRoute: typeof AuthenticatedCustomersIdRouteImport
+      parentRoute: typeof AuthenticatedCustomersRoute
     }
   }
 }
@@ -409,10 +528,27 @@ const AuthenticatedAgentsRouteChildren: AuthenticatedAgentsRouteChildren = {
 const AuthenticatedAgentsRouteWithChildren =
   AuthenticatedAgentsRoute._addFileChildren(AuthenticatedAgentsRouteChildren)
 
+interface AuthenticatedCustomersRouteChildren {
+  AuthenticatedCustomersIdRoute: typeof AuthenticatedCustomersIdRoute
+}
+
+const AuthenticatedCustomersRouteChildren: AuthenticatedCustomersRouteChildren =
+  {
+    AuthenticatedCustomersIdRoute: AuthenticatedCustomersIdRoute,
+  }
+
+const AuthenticatedCustomersRouteWithChildren =
+  AuthenticatedCustomersRoute._addFileChildren(
+    AuthenticatedCustomersRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgentsRoute: typeof AuthenticatedAgentsRouteWithChildren
   AuthenticatedAuditLogRoute: typeof AuthenticatedAuditLogRoute
   AuthenticatedCashFlowRoute: typeof AuthenticatedCashFlowRoute
+  AuthenticatedCashFlowByPersonRoute: typeof AuthenticatedCashFlowByPersonRoute
+  AuthenticatedCashSummaryRoute: typeof AuthenticatedCashSummaryRoute
+  AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedExpensesRoute: typeof AuthenticatedExpensesRoute
   AuthenticatedFactorySalesRoute: typeof AuthenticatedFactorySalesRoute
@@ -422,15 +558,20 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPrintingRoute: typeof AuthenticatedPrintingRoute
   AuthenticatedProFormRoute: typeof AuthenticatedProFormRoute
   AuthenticatedProductionRoute: typeof AuthenticatedProductionRoute
+  AuthenticatedProductionReportRoute: typeof AuthenticatedProductionReportRoute
   AuthenticatedReconciliationRoute: typeof AuthenticatedReconciliationRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSalesRoute: typeof AuthenticatedSalesRoute
+  AuthenticatedStockInventoryRoute: typeof AuthenticatedStockInventoryRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgentsRoute: AuthenticatedAgentsRouteWithChildren,
   AuthenticatedAuditLogRoute: AuthenticatedAuditLogRoute,
   AuthenticatedCashFlowRoute: AuthenticatedCashFlowRoute,
+  AuthenticatedCashFlowByPersonRoute: AuthenticatedCashFlowByPersonRoute,
+  AuthenticatedCashSummaryRoute: AuthenticatedCashSummaryRoute,
+  AuthenticatedCustomersRoute: AuthenticatedCustomersRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedExpensesRoute: AuthenticatedExpensesRoute,
   AuthenticatedFactorySalesRoute: AuthenticatedFactorySalesRoute,
@@ -440,9 +581,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPrintingRoute: AuthenticatedPrintingRoute,
   AuthenticatedProFormRoute: AuthenticatedProFormRoute,
   AuthenticatedProductionRoute: AuthenticatedProductionRoute,
+  AuthenticatedProductionReportRoute: AuthenticatedProductionReportRoute,
   AuthenticatedReconciliationRoute: AuthenticatedReconciliationRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSalesRoute: AuthenticatedSalesRoute,
+  AuthenticatedStockInventoryRoute: AuthenticatedStockInventoryRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

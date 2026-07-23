@@ -199,6 +199,36 @@ export type Database = {
         }
         Relationships: []
       }
+      customers: {
+        Row: {
+          id: string
+          name: string
+          phone: string | null
+          location: string | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          phone?: string | null
+          location?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          phone?: string | null
+          location?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       expenses: {
         Row: {
           amount: number
@@ -251,6 +281,7 @@ export type Database = {
           salary_cost: number
           notes: string | null
           logged_by: string | null
+          customer_id: string | null
           created_at: string
           updated_at: string
         }
@@ -272,6 +303,7 @@ export type Database = {
           salary_cost?: number
           notes?: string | null
           logged_by?: string | null
+          customer_id?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -293,10 +325,18 @@ export type Database = {
           salary_cost?: number
           notes?: string | null
           logged_by?: string | null
+          customer_id?: string | null
           created_at?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "factory_sales_customer_id_fkey"
+            columns: ["customer_id"]
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       finished_goods_stock: {
         Row: {
@@ -600,6 +640,120 @@ export type Database = {
           logged_by?: string | null
           notes?: string | null
           shift?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      production_reports: {
+        Row: {
+          id: string
+          report_date: string
+          bcnt_used: number
+          bcnt_produced: number
+          top_used: number
+          top_produced: number
+          sup_used: number
+          sup_produced: number
+          exe_used: number
+          exe_produced: number
+          brw_used: number
+          brw_produced: number
+          scnt_used: number
+          scnt_produced: number
+          nat_used: number
+          nat_produced: number
+          mac_used: number
+          mac_produced: number
+          total_used: number
+          total_produced: number
+          bakers: number
+          packers: number
+          management: number
+          total_staff: number
+          bcnt_damaged: number
+          top_damaged: number
+          sup_damaged: number
+          exe_damaged: number
+          brw_damaged: number
+          scnt_damaged: number
+          nat_damaged: number
+          mac_damaged: number
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          report_date?: string
+          bcnt_used?: number
+          bcnt_produced?: number
+          top_used?: number
+          top_produced?: number
+          sup_used?: number
+          sup_produced?: number
+          exe_used?: number
+          exe_produced?: number
+          brw_used?: number
+          brw_produced?: number
+          scnt_used?: number
+          scnt_produced?: number
+          nat_used?: number
+          nat_produced?: number
+          mac_used?: number
+          mac_produced?: number
+          total_used?: number
+          total_produced?: number
+          bakers?: number
+          packers?: number
+          management?: number
+          total_staff?: number
+          bcnt_damaged?: number
+          top_damaged?: number
+          sup_damaged?: number
+          exe_damaged?: number
+          brw_damaged?: number
+          scnt_damaged?: number
+          nat_damaged?: number
+          mac_damaged?: number
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          report_date?: string
+          bcnt_used?: number
+          bcnt_produced?: number
+          top_used?: number
+          top_produced?: number
+          sup_used?: number
+          sup_produced?: number
+          exe_used?: number
+          exe_produced?: number
+          brw_used?: number
+          brw_produced?: number
+          scnt_used?: number
+          scnt_produced?: number
+          nat_used?: number
+          nat_produced?: number
+          mac_used?: number
+          mac_produced?: number
+          total_used?: number
+          total_produced?: number
+          bakers?: number
+          packers?: number
+          management?: number
+          total_staff?: number
+          bcnt_damaged?: number
+          top_damaged?: number
+          sup_damaged?: number
+          exe_damaged?: number
+          brw_damaged?: number
+          scnt_damaged?: number
+          nat_damaged?: number
+          mac_damaged?: number
+          notes?: string | null
+          created_at?: string
           updated_at?: string
         }
         Relationships: []

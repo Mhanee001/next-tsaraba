@@ -1,4 +1,4 @@
-# TSARABA
+# NEXT TSARABA MANAGEMENT SYSTEM
 
 Inventory & production management system for small to medium manufacturing businesses.
 
