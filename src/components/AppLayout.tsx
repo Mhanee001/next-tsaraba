@@ -26,11 +26,11 @@ const NAV: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/sales", label: "Sales", icon: ShoppingCart },
   { to: "/agents", label: "Agents", icon: Users },
-  { to: "/production", label: "Production", icon: Factory, soon: true },
-  { to: "/materials", label: "Materials", icon: Package, soon: true },
-  { to: "/expenses", label: "Expenses", icon: Receipt, soon: true },
-  { to: "/reconciliation", label: "Cash", icon: Wallet, soon: true },
-  { to: "/reports", label: "Reports", icon: BarChart3, soon: true },
+  { to: "/production", label: "Production", icon: Factory },
+  { to: "/materials", label: "Materials", icon: Package },
+  { to: "/expenses", label: "Expenses", icon: Receipt },
+  { to: "/reconciliation", label: "Cash", icon: Wallet },
+  { to: "/reports", label: "Reports", icon: BarChart3 },
 ];
 
 export function AppLayout({ children }: { children: ReactNode }) {
