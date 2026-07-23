@@ -232,6 +232,72 @@ export type Database = {
         }
         Relationships: []
       }
+      factory_sales: {
+        Row: {
+          id: string
+          sale_date: string
+          product: string
+          price_per_loaf: number
+          quantity: number
+          amount: number
+          damage_qty: number
+          damage_amount: number
+          return_qty: number
+          return_amount: number
+          net_quantity: number
+          net_amount: number
+          fuel_cost: number
+          commission_cost: number
+          salary_cost: number
+          notes: string | null
+          logged_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          sale_date?: string
+          product: string
+          price_per_loaf?: number
+          quantity?: number
+          amount?: number
+          damage_qty?: number
+          damage_amount?: number
+          return_qty?: number
+          return_amount?: number
+          net_quantity?: number
+          net_amount?: number
+          fuel_cost?: number
+          commission_cost?: number
+          salary_cost?: number
+          notes?: string | null
+          logged_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          sale_date?: string
+          product?: string
+          price_per_loaf?: number
+          quantity?: number
+          amount?: number
+          damage_qty?: number
+          damage_amount?: number
+          return_qty?: number
+          return_amount?: number
+          net_quantity?: number
+          net_amount?: number
+          fuel_cost?: number
+          commission_cost?: number
+          salary_cost?: number
+          notes?: string | null
+          logged_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       finished_goods_stock: {
         Row: {
           created_at: string

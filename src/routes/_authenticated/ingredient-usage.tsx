@@ -8,9 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ClipboardList } from "lucide-react";
-import { formatInt, todayISO } from "@/lib/format";
+import { ClipboardList, AlertTriangle } from "lucide-react";
+import { formatNaira, formatInt, todayISO } from "@/lib/format";
 import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/ingredient-usage")({
@@ -40,30 +39,20 @@ type UsageLog = {
   preservatives_used_g: number;
   notes: string | null;
 };
-
-type UsageForm = {
-  flour_bags: string;
-  flour_measure_g: string;
-  flour_used_g: string;
-  sugar_measure_g: string;
-  sugar_used_g: string;
-  salt_measure_g: string;
-  salt_used_g: string;
-  preservatives_measure_g: string;
-  preservatives_used_g: string;
+type RawMat = {
+  id: string;
+  name: string;
+  cost_per_unit: number;
+  quantity_in_stock: number;
+  low_stock_threshold: number;
 };
 
-const emptyForm = (): UsageForm => ({
-  flour_bags: "",
-  flour_measure_g: "",
-  flour_used_g: "",
-  sugar_measure_g: "",
-  sugar_used_g: "",
-  salt_measure_g: "",
-  salt_used_g: "",
-  preservatives_measure_g: "",
-  preservatives_used_g: "",
-});
+const GRAMS_PER_BAG: Record<string, number> = {
+  FLOUR: 50000,
+  SUGAR: 50000,
+  SALT: 50000,
+  PRESERVATIVES: 20000,
+};
 
 function IngredientUsagePage() {
   const qc = useQueryClient();
@@ -94,79 +83,23 @@ function IngredientUsagePage() {
     },
   });
 
+  const matsQ = useQuery({
+    queryKey: ["raw-materials-names"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("raw_materials")
+        .select("*")
+        .in("name", ["FLOUR", "SUGAR", "SALT", "PRESERVATIVES"]);
+      if (error) throw error;
+      return (data ?? []) as RawMat[];
+    },
+  });
+
   const logsByProduct: Record<string, UsageLog> = {};
-  for (const log of logsQ.data ?? []) {
-    logsByProduct[log.product_type_id] = log;
-  }
+  for (const log of logsQ.data ?? []) logsByProduct[log.product_type_id] = log;
 
-  const startEdit = (productId: string) => {
-    const existing = logsByProduct[productId];
-    setForms((prev) => ({
-      ...prev,
-      [productId]: existing
-        ? {
-            flour_bags: String(existing.flour_bags),
-            flour_measure_g: String(existing.flour_measure_g),
-            flour_used_g: String(existing.flour_used_g),
-            sugar_measure_g: String(existing.sugar_measure_g),
-            sugar_used_g: String(existing.sugar_used_g),
-            salt_measure_g: String(existing.salt_measure_g),
-            salt_used_g: String(existing.salt_used_g),
-            preservatives_measure_g: String(existing.preservatives_measure_g),
-            preservatives_used_g: String(existing.preservatives_used_g),
-          }
-        : emptyForm(),
-    }));
-    setEditingProduct(productId);
-  };
-
-  const cancelEdit = () => {
-    setEditingProduct(null);
-  };
-
-  const saveLog = async (productTypeId: string) => {
-    const f = forms[productTypeId];
-    if (!f) return;
-    setSaving(true);
-    const payload = {
-      log_date: logDate,
-      product_type_id: productTypeId,
-      flour_bags: Number(f.flour_bags) || 0,
-      flour_measure_g: Number(f.flour_measure_g) || 0,
-      flour_used_g: Number(f.flour_used_g) || 0,
-      sugar_measure_g: Number(f.sugar_measure_g) || 0,
-      sugar_used_g: Number(f.sugar_used_g) || 0,
-      salt_measure_g: Number(f.salt_measure_g) || 0,
-      salt_used_g: Number(f.salt_used_g) || 0,
-      preservatives_measure_g: Number(f.preservatives_measure_g) || 0,
-      preservatives_used_g: Number(f.preservatives_used_g) || 0,
-    };
-    const existing = logsByProduct[productTypeId];
-    const { error } = existing
-      ? await supabase.from("ingredient_usage_logs").update(payload).eq("id", existing.id)
-      : await supabase.from("ingredient_usage_logs").insert(payload);
-    setSaving(false);
-    if (error) return toast.error(error.message);
-    try {
-      if (existing) {
-        await writeAuditLog({ table_name: "ingredient_usage_logs", record_id: existing.id, action: "UPDATE", old_values: existing, new_values: payload });
-      } else {
-        await writeAuditLog({ table_name: "ingredient_usage_logs", action: "INSERT", new_values: payload });
-      }
-    } catch { /* silent */ }
-    toast.success(existing ? "Updated" : "Saved");
-    setEditingProduct(null);
-    qc.invalidateQueries({ queryKey: ["ingredient-usage", logDate] });
-  };
-
-  const deleteLog = async (log: UsageLog) => {
-    if (!confirm("Delete this usage record?")) return;
-    const { error } = await supabase.from("ingredient_usage_logs").delete().eq("id", log.id);
-    if (error) return toast.error(error.message);
-    try { await writeAuditLog({ table_name: "ingredient_usage_logs", record_id: log.id, action: "DELETE", old_values: log }); } catch { /* silent */ }
-    toast.success("Deleted");
-    qc.invalidateQueries({ queryKey: ["ingredient-usage", logDate] });
-  };
+  const matByName: Record<string, RawMat> = {};
+  for (const m of matsQ.data ?? []) matByName[m.name] = m;
 
   const products = productsQ.data ?? [];
   const logs = logsQ.data ?? [];
@@ -177,6 +110,21 @@ function IngredientUsagePage() {
     sugar_used_g: logs.reduce((s, r) => s + Number(r.sugar_used_g), 0),
     salt_used_g: logs.reduce((s, r) => s + Number(r.salt_used_g), 0),
     preservatives_used_g: logs.reduce((s, r) => s + Number(r.preservatives_used_g), 0),
+  };
+
+  const costOfUse = (ingredient: string, usedG: number) => {
+    const m = matByName[ingredient];
+    if (!m || !usedG) return 0;
+    const gpb = GRAMS_PER_BAG[ingredient] || 50000;
+    return (m.cost_per_unit / gpb) * usedG;
+  };
+
+  const leftoverG = (ingredient: string, usedG: number) => {
+    const m = matByName[ingredient];
+    if (!m) return 0;
+    const gpb = GRAMS_PER_BAG[ingredient] || 50000;
+    const stockG = m.quantity_in_stock * gpb;
+    return stockG - usedG;
   };
 
   return (
@@ -202,9 +150,55 @@ function IngredientUsagePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
-            Usage for {logDate}
-          </CardTitle>
+          <CardTitle className="text-base">Stock on Hand &amp; Cost Reference</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="px-4 py-3">Ingredient</th>
+                  <th className="px-4 py-3 text-right">Cost / Bag</th>
+                  <th className="px-4 py-3 text-right">Stock (bags)</th>
+                  <th className="px-4 py-3 text-right">Stock (g)</th>
+                  <th className="px-4 py-3 text-right">Cost / g</th>
+                  <th className="px-4 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {(["FLOUR", "SUGAR", "SALT", "PRESERVATIVES"] as const).map((name) => {
+                  const m = matByName[name];
+                  const gpb = GRAMS_PER_BAG[name] || 50000;
+                  return (
+                    <tr key={name}>
+                      <td className="px-4 py-3 font-medium capitalize">{name.toLowerCase()}</td>
+                      <td className="px-4 py-3 text-right">{m ? formatNaira(m.cost_per_unit) : "—"}</td>
+                      <td className="px-4 py-3 text-right">{m ? formatInt(m.quantity_in_stock) : "—"}</td>
+                      <td className="px-4 py-3 text-right">{m ? formatInt(m.quantity_in_stock * gpb) : "—"}</td>
+                      <td className="px-4 py-3 text-right">
+                        {m ? formatNaira(m.cost_per_unit / gpb) : "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {m && m.quantity_in_stock <= m.low_stock_threshold ? (
+                          <span className="flex items-center gap-1 text-amber-600">
+                            <AlertTriangle className="h-3.5 w-3.5" /> Low stock
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">OK</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Usage for {logDate}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {productsQ.isLoading || logsQ.isLoading ? (
@@ -213,7 +207,7 @@ function IngredientUsagePage() {
             <p className="p-6 text-sm text-muted-foreground">No product types found.</p>
           ) : (
             <ScrollArea>
-              <div className="min-w-[900px]">
+              <div className="min-w-[1200px]">
                 <table className="w-full text-sm">
                   <thead className="bg-muted/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
                     <tr>
@@ -244,7 +238,6 @@ function IngredientUsagePage() {
                       const log = logsByProduct[p.id];
                       const isEditing = editingProduct === p.id;
                       const f = forms[p.id];
-
                       if (isEditing && f) {
                         return (
                           <tr key={p.id} className="bg-muted/20">
@@ -314,7 +307,6 @@ function IngredientUsagePage() {
                           </tr>
                         );
                       }
-
                       return (
                         <tr key={p.id}>
                           <td className="px-4 py-3 font-medium">{p.name}</td>
@@ -361,6 +353,171 @@ function IngredientUsagePage() {
           )}
         </CardContent>
       </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Cost of Use &amp; Leftover Stock</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="px-4 py-3">Item</th>
+                  <th className="px-4 py-3 text-right">Total Used (g)</th>
+                  <th className="px-4 py-3 text-right">Cost of Use</th>
+                  <th className="px-4 py-3 text-right">Leftover (g)</th>
+                  <th className="px-4 py-3 text-right">Leftover (bags)</th>
+                  <th className="px-4 py-3 text-right">Leftover Value</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {([
+                  { key: "FLOUR", usedG: totals.flour_used_g, label: "Flour" },
+                  { key: "SUGAR", usedG: totals.sugar_used_g, label: "Sugar" },
+                  { key: "SALT", usedG: totals.salt_used_g, label: "Salt" },
+                  { key: "PRESERVATIVES", usedG: totals.preservatives_used_g, label: "Preservatives" },
+                ] as const).map(({ key, usedG, label }) => {
+                  const m = matByName[key];
+                  const gpb = GRAMS_PER_BAG[key] || 50000;
+                  const cost = costOfUse(key, usedG);
+                  const leftG = leftoverG(key, usedG);
+                  const leftBags = m ? leftG / gpb : 0;
+                  const leftVal = m ? (m.cost_per_unit / gpb) * Math.max(0, leftG) : 0;
+                  const isLow = m && leftG / gpb <= m.low_stock_threshold;
+                  return (
+                    <tr key={key}>
+                      <td className="px-4 py-3 font-medium">{label}</td>
+                      <td className="px-4 py-3 text-right">{formatInt(usedG)}</td>
+                      <td className="px-4 py-3 text-right font-semibold">{formatNaira(cost)}</td>
+                      <td className={`px-4 py-3 text-right ${isLow ? "text-amber-600" : ""}`}>
+                        {formatInt(Math.max(0, leftG))}
+                        {isLow && <AlertTriangle className="ml-1 inline h-3.5 w-3.5" />}
+                      </td>
+                      <td className={`px-4 py-3 text-right ${isLow ? "text-amber-600" : ""}`}>
+                        {formatInt(Math.max(0, leftBags))}
+                      </td>
+                      <td className="px-4 py-3 text-right">{formatNaira(Math.max(0, leftVal))}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot className="border-t-2 border-border bg-muted/30 font-semibold">
+                <tr>
+                  <td className="px-4 py-3">TOTAL</td>
+                  <td className="px-4 py-3 text-right">
+                    {formatInt(
+                      totals.flour_used_g + totals.sugar_used_g + totals.salt_used_g + totals.preservatives_used_g,
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    {formatNaira(
+                      costOfUse("FLOUR", totals.flour_used_g) +
+                        costOfUse("SUGAR", totals.sugar_used_g) +
+                        costOfUse("SALT", totals.salt_used_g) +
+                        costOfUse("PRESERVATIVES", totals.preservatives_used_g),
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-right" colSpan={3}></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
+
+  function startEdit(productId: string) {
+    const existing = logsByProduct[productId];
+    setForms((prev) => ({
+      ...prev,
+      [productId]: existing
+        ? {
+            flour_bags: String(existing.flour_bags),
+            flour_measure_g: String(existing.flour_measure_g),
+            flour_used_g: String(existing.flour_used_g),
+            sugar_measure_g: String(existing.sugar_measure_g),
+            sugar_used_g: String(existing.sugar_used_g),
+            salt_measure_g: String(existing.salt_measure_g),
+            salt_used_g: String(existing.salt_used_g),
+            preservatives_measure_g: String(existing.preservatives_measure_g),
+            preservatives_used_g: String(existing.preservatives_used_g),
+          }
+        : emptyForm(),
+    }));
+    setEditingProduct(productId);
+  }
+
+  function cancelEdit() {
+    setEditingProduct(null);
+  }
+
+  async function saveLog(productTypeId: string) {
+    const f = forms[productTypeId];
+    if (!f) return;
+    setSaving(true);
+    const payload = {
+      log_date: logDate,
+      product_type_id: productTypeId,
+      flour_bags: Number(f.flour_bags) || 0,
+      flour_measure_g: Number(f.flour_measure_g) || 0,
+      flour_used_g: Number(f.flour_used_g) || 0,
+      sugar_measure_g: Number(f.sugar_measure_g) || 0,
+      sugar_used_g: Number(f.sugar_used_g) || 0,
+      salt_measure_g: Number(f.salt_measure_g) || 0,
+      salt_used_g: Number(f.salt_used_g) || 0,
+      preservatives_measure_g: Number(f.preservatives_measure_g) || 0,
+      preservatives_used_g: Number(f.preservatives_used_g) || 0,
+    };
+    const existing = logsByProduct[productTypeId];
+    const { error } = existing
+      ? await supabase.from("ingredient_usage_logs").update(payload).eq("id", existing.id)
+      : await supabase.from("ingredient_usage_logs").insert(payload);
+    setSaving(false);
+    if (error) return toast.error(error.message);
+    try {
+      if (existing) {
+        await writeAuditLog({ table_name: "ingredient_usage_logs", record_id: existing.id, action: "UPDATE", old_values: existing, new_values: payload });
+      } else {
+        await writeAuditLog({ table_name: "ingredient_usage_logs", action: "INSERT", new_values: payload });
+      }
+    } catch { /* silent */ }
+    toast.success(existing ? "Updated" : "Saved");
+    setEditingProduct(null);
+    qc.invalidateQueries({ queryKey: ["ingredient-usage", logDate] });
+  }
+
+  async function deleteLog(log: UsageLog) {
+    if (!confirm("Delete this usage record?")) return;
+    const { error } = await supabase.from("ingredient_usage_logs").delete().eq("id", log.id);
+    if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "ingredient_usage_logs", record_id: log.id, action: "DELETE", old_values: log }); } catch { /* silent */ }
+    toast.success("Deleted");
+    qc.invalidateQueries({ queryKey: ["ingredient-usage", logDate] });
+  }
 }
+
+type UsageForm = {
+  flour_bags: string;
+  flour_measure_g: string;
+  flour_used_g: string;
+  sugar_measure_g: string;
+  sugar_used_g: string;
+  salt_measure_g: string;
+  salt_used_g: string;
+  preservatives_measure_g: string;
+  preservatives_used_g: string;
+};
+
+const emptyForm = (): UsageForm => ({
+  flour_bags: "",
+  flour_measure_g: "",
+  flour_used_g: "",
+  sugar_measure_g: "",
+  sugar_used_g: "",
+  salt_measure_g: "",
+  salt_used_g: "",
+  preservatives_measure_g: "",
+  preservatives_used_g: "",
+});

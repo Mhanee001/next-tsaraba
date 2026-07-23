@@ -17,6 +17,7 @@ import { Route as AuthenticatedAuditLogRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedCashFlowRouteImport } from './routes/_authenticated/cash-flow'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedExpensesRouteImport } from './routes/_authenticated/expenses'
+import { Route as AuthenticatedFactorySalesRouteImport } from './routes/_authenticated/factory-sales'
 import { Route as AuthenticatedIngredientUsageRouteImport } from './routes/_authenticated/ingredient-usage'
 import { Route as AuthenticatedManagingDirectorRouteImport } from './routes/_authenticated/managing-director'
 import { Route as AuthenticatedMaterialsRouteImport } from './routes/_authenticated/materials'
@@ -67,6 +68,12 @@ const AuthenticatedExpensesRoute = AuthenticatedExpensesRouteImport.update({
   path: '/expenses',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFactorySalesRoute =
+  AuthenticatedFactorySalesRouteImport.update({
+    id: '/factory-sales',
+    path: '/factory-sales',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedIngredientUsageRoute =
   AuthenticatedIngredientUsageRouteImport.update({
     id: '/ingredient-usage',
@@ -129,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/cash-flow': typeof AuthenticatedCashFlowRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
+  '/factory-sales': typeof AuthenticatedFactorySalesRoute
   '/ingredient-usage': typeof AuthenticatedIngredientUsageRoute
   '/managing-director': typeof AuthenticatedManagingDirectorRoute
   '/materials': typeof AuthenticatedMaterialsRoute
@@ -148,6 +156,7 @@ export interface FileRoutesByTo {
   '/cash-flow': typeof AuthenticatedCashFlowRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
+  '/factory-sales': typeof AuthenticatedFactorySalesRoute
   '/ingredient-usage': typeof AuthenticatedIngredientUsageRoute
   '/managing-director': typeof AuthenticatedManagingDirectorRoute
   '/materials': typeof AuthenticatedMaterialsRoute
@@ -169,6 +178,7 @@ export interface FileRoutesById {
   '/_authenticated/cash-flow': typeof AuthenticatedCashFlowRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/expenses': typeof AuthenticatedExpensesRoute
+  '/_authenticated/factory-sales': typeof AuthenticatedFactorySalesRoute
   '/_authenticated/ingredient-usage': typeof AuthenticatedIngredientUsageRoute
   '/_authenticated/managing-director': typeof AuthenticatedManagingDirectorRoute
   '/_authenticated/materials': typeof AuthenticatedMaterialsRoute
@@ -190,6 +200,7 @@ export interface FileRouteTypes {
     | '/cash-flow'
     | '/dashboard'
     | '/expenses'
+    | '/factory-sales'
     | '/ingredient-usage'
     | '/managing-director'
     | '/materials'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/cash-flow'
     | '/dashboard'
     | '/expenses'
+    | '/factory-sales'
     | '/ingredient-usage'
     | '/managing-director'
     | '/materials'
@@ -229,6 +241,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cash-flow'
     | '/_authenticated/dashboard'
     | '/_authenticated/expenses'
+    | '/_authenticated/factory-sales'
     | '/_authenticated/ingredient-usage'
     | '/_authenticated/managing-director'
     | '/_authenticated/materials'
@@ -303,6 +316,13 @@ declare module '@tanstack/react-router' {
       path: '/expenses'
       fullPath: '/expenses'
       preLoaderRoute: typeof AuthenticatedExpensesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/factory-sales': {
+      id: '/_authenticated/factory-sales'
+      path: '/factory-sales'
+      fullPath: '/factory-sales'
+      preLoaderRoute: typeof AuthenticatedFactorySalesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/ingredient-usage': {
@@ -395,6 +415,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCashFlowRoute: typeof AuthenticatedCashFlowRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedExpensesRoute: typeof AuthenticatedExpensesRoute
+  AuthenticatedFactorySalesRoute: typeof AuthenticatedFactorySalesRoute
   AuthenticatedIngredientUsageRoute: typeof AuthenticatedIngredientUsageRoute
   AuthenticatedManagingDirectorRoute: typeof AuthenticatedManagingDirectorRoute
   AuthenticatedMaterialsRoute: typeof AuthenticatedMaterialsRoute
@@ -412,6 +433,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCashFlowRoute: AuthenticatedCashFlowRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedExpensesRoute: AuthenticatedExpensesRoute,
+  AuthenticatedFactorySalesRoute: AuthenticatedFactorySalesRoute,
   AuthenticatedIngredientUsageRoute: AuthenticatedIngredientUsageRoute,
   AuthenticatedManagingDirectorRoute: AuthenticatedManagingDirectorRoute,
   AuthenticatedMaterialsRoute: AuthenticatedMaterialsRoute,
