@@ -1,29 +1,48 @@
-# Welcome to your Lovable project
+# TSARABA
 
-This project was built with [Lovable](https://lovable.dev).
+Inventory & production management system for small to medium manufacturing businesses.
 
-## Build with Lovable
+## Features
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+- **Materials Management** — Track raw materials with stock levels and supplier info
+- **Production Orders** — Create and manage production batches
+- **Sales & Invoicing** — Customer orders, invoices, and payment tracking
+- **Cash Flow** — Monitor income and expenses
+- **Agent Management** — Workforce and labor tracking
+- **Pro Forma Invoices** — Generate quotes and estimates
+- **Expense Tracking** — Log and categorize operational expenses
+- **Reconciliation** — Match payments to invoices
+- **Ingredient Usage** — Track material consumption per production run
+- **Printing Orders** — Manage print-specific production workflows
+- **Audit Log** — Full change history for compliance
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+## Tech Stack
 
-## Development
+- **Framework:** TanStack Start (React)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Database:** Supabase (PostgreSQL)
+- **Auth:** Supabase Auth
+- **Routing:** TanStack Router
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Getting Started
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
+git clone <repo-url>
+cd tsaraba
 npm i
 npm run dev
 ```
 
-## Built with
+## Project Structure
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+```
+src/
+├── components/         # Shared UI components
+├── integrations/       # External service integrations (Supabase)
+├── lib/                # Utility functions and helpers
+├── routes/             # TanStack Router route files
+└── routeTree.gen.ts    # Auto-generated route tree
+supabase/
+└── migrations/         # Database migrations
+```

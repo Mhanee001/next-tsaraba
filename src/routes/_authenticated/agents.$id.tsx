@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatNaira } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/agents/$id")({
   head: () => ({
@@ -56,12 +57,14 @@ function AgentDetail() {
     if (!agentQ.data) return;
     setSaving(true);
     const newBalance = Math.max(0, Number(agentQ.data.credit_balance) - amt);
+    const oldCredit = agentQ.data.credit_balance;
     const { error } = await supabase
       .from("agents")
       .update({ credit_balance: newBalance })
       .eq("id", id);
     setSaving(false);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "agents", record_id: id, action: "UPDATE", old_values: { credit_balance: oldCredit }, new_values: { credit_balance: newBalance } }); } catch { /* silent */ }
     toast.success("Payment recorded");
     setPayment("");
     qc.invalidateQueries({ queryKey: ["agent", id] });

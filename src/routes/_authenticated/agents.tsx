@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { formatNaira } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/agents")({
   head: () => ({
@@ -59,6 +60,7 @@ function AgentsPage() {
     });
     setSaving(false);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "agents", action: "INSERT", new_values: { name: form.name.trim(), phone: form.phone || null, location: form.location || null, commission_rate: Number(form.commission_rate) || 0 } }); } catch { /* silent */ }
     toast.success("Agent added");
     setOpen(false);
     setForm({ name: "", phone: "", location: "", commission_rate: "0" });

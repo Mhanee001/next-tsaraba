@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Receipt } from "lucide-react";
 import { formatNaira, todayISO } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 const CATEGORIES = ["Fuel", "Maintenance", "Food", "Wages", "Utilities", "Transport", "Supplies", "Misc"];
 
@@ -72,6 +73,7 @@ function ExpensesPage() {
     });
     setSaving(false);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "expenses", action: "INSERT", new_values: { expense_date: form.expense_date, category: form.category, amount: amt, description: form.description || null, logged_by: userData.user?.id ?? null } }); } catch { /* silent */ }
     toast.success("Expense logged");
     setForm({ ...form, amount: "", description: "" });
     qc.invalidateQueries({ queryKey: ["expenses-recent"] });
@@ -79,8 +81,10 @@ function ExpensesPage() {
 
   const remove = async (id: string) => {
     if (!confirm("Delete this expense?")) return;
+    const { data: oldData } = await supabase.from("expenses").select("*").eq("id", id).single();
     const { error } = await supabase.from("expenses").delete().eq("id", id);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "expenses", record_id: id, action: "DELETE", old_values: oldData ?? undefined }); } catch { /* silent */ }
     qc.invalidateQueries({ queryKey: ["expenses-recent"] });
   };
 

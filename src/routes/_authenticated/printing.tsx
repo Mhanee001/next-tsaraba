@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Printer, Plus } from "lucide-react";
 import { formatNaira, formatInt, todayISO } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/printing")({
   head: () => ({
@@ -64,6 +65,7 @@ function PrintingPage() {
     });
     setSaving(false);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "printing_jobs", action: "INSERT", new_values: { job_date: form.job_date, description: form.description.trim(), item_type: form.item_type, quantity: Number(form.quantity) || 0, cost: Number(form.cost) || 0, vendor: form.vendor || null, notes: form.notes || null, logged_by: userData.user?.id ?? null } }); } catch { /* silent */ }
     toast.success("Printing job saved");
     setForm({ job_date: todayISO(), description: "", item_type: "label", quantity: "", cost: "", vendor: "", notes: "" });
     setShowForm(false);
@@ -72,8 +74,10 @@ function PrintingPage() {
 
   const remove = async (id: string) => {
     if (!confirm("Delete this job?")) return;
+    const { data: oldJob } = await supabase.from("printing_jobs").select("*").eq("id", id).single();
     const { error } = await supabase.from("printing_jobs").delete().eq("id", id);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "printing_jobs", record_id: id, action: "DELETE", old_values: oldJob ?? undefined }); } catch { /* silent */ }
     toast.success("Deleted");
     qc.invalidateQueries({ queryKey: ["printing-jobs"] });
   };

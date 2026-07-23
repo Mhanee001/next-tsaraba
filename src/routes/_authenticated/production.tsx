@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Factory } from "lucide-react";
 import { formatInt, todayISO } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/production")({
   head: () => ({
@@ -67,6 +68,7 @@ function ProductionPage() {
     });
     setSaving(false);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "production_logs", action: "INSERT", new_values: { log_date: form.log_date, shift: form.shift, bags_produced: bags, damages: Number(form.damages) || 0, carry_over_stock: Number(form.carry_over_stock) || 0, notes: form.notes || null, logged_by: userData.user?.id ?? null } }); } catch { /* silent */ }
     toast.success("Production logged");
     setForm({ ...form, bags_produced: "", damages: "0", carry_over_stock: "0", notes: "" });
     qc.invalidateQueries({ queryKey: ["production-recent"] });

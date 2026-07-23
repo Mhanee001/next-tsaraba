@@ -15,6 +15,7 @@ import {
   Printer,
   Landmark,
   Crown,
+  History,
   LogOut,
   Menu,
   X,
@@ -41,6 +42,7 @@ const NAV: NavItem[] = [
   { to: "/reconciliation", label: "Cash", icon: Wallet },
   { to: "/cash-flow", label: "Cash Flow", icon: Landmark },
   { to: "/reports", label: "Reports", icon: BarChart3 },
+  { to: "/audit-log", label: "Audit Log", icon: History },
 ];
 
 export function AppLayout({ children }: { children: ReactNode }) {

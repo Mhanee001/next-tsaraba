@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatNaira, todayISO } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/sales")({
   head: () => ({
@@ -106,6 +107,8 @@ function SalesPage() {
       setSaving(false);
       return toast.error(error.message);
     }
+
+    try { await writeAuditLog({ table_name: "sales_records", action: "INSERT", new_values: { sale_date: form.sale_date, sale_type: form.sale_type, agent_id: form.sale_type === "agent" ? form.agent_id : null, quantity: qty, unit_price: price, gross_amount: gross, cash_collected: cash, credit_amount: credit, discount, damages: Number(form.damages) || 0, returns: Number(form.returns) || 0, commission_earned: commission, notes: form.notes || null, logged_by: userData.user?.id ?? null } }); } catch { /* silent */ }
 
     // Update agent credit if credit was issued
     if (form.sale_type === "agent" && form.agent_id && credit > 0 && selectedAgent) {

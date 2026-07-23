@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Package, Plus, AlertTriangle, Warehouse } from "lucide-react";
 import { formatNaira, formatInt } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/materials")({
   head: () => ({
@@ -81,6 +82,13 @@ function MaterialsPage() {
       : await supabase.from("raw_materials").insert(payload);
     setSaving(false);
     if (error) return toast.error(error.message);
+    try {
+      if (editing) {
+        await writeAuditLog({ table_name: "raw_materials", record_id: editing.id, action: "UPDATE", old_values: editing, new_values: payload });
+      } else {
+        await writeAuditLog({ table_name: "raw_materials", action: "INSERT", new_values: payload });
+      }
+    } catch { /* silent */ }
     toast.success(editing ? "Material updated" : "Material added");
     setOpen(false);
     qc.invalidateQueries({ queryKey: ["materials"] });
@@ -91,6 +99,7 @@ function MaterialsPage() {
     if (!confirm(`Delete ${m.name}?`)) return;
     const { error } = await supabase.from("raw_materials").delete().eq("id", m.id);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "raw_materials", record_id: m.id, action: "DELETE", old_values: m }); } catch { /* silent */ }
     toast.success("Deleted");
     qc.invalidateQueries({ queryKey: ["materials"] });
   };
@@ -109,8 +118,10 @@ function MaterialsPage() {
     if (!Number.isFinite(num)) return;
     const payload: Record<string, number> = {};
     payload[field] = num;
+    const { data: oldFgs } = await (supabase as any).from("finished_goods_stock").select("*").eq("id", id).single();
     const { error } = await (supabase as any).from("finished_goods_stock").update(payload).eq("id", id);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "finished_goods_stock", record_id: id, action: "UPDATE", old_values: oldFgs ?? undefined, new_values: payload }); } catch { /* silent */ }
     toast.success("Updated");
     qc.invalidateQueries({ queryKey: ["finished-goods"] });
   };

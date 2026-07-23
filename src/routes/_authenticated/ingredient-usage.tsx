@@ -11,6 +11,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClipboardList } from "lucide-react";
 import { formatInt, todayISO } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/ingredient-usage")({
   head: () => ({
@@ -146,6 +147,13 @@ function IngredientUsagePage() {
       : await supabase.from("ingredient_usage_logs").insert(payload);
     setSaving(false);
     if (error) return toast.error(error.message);
+    try {
+      if (existing) {
+        await writeAuditLog({ table_name: "ingredient_usage_logs", record_id: existing.id, action: "UPDATE", old_values: existing, new_values: payload });
+      } else {
+        await writeAuditLog({ table_name: "ingredient_usage_logs", action: "INSERT", new_values: payload });
+      }
+    } catch { /* silent */ }
     toast.success(existing ? "Updated" : "Saved");
     setEditingProduct(null);
     qc.invalidateQueries({ queryKey: ["ingredient-usage", logDate] });
@@ -155,6 +163,7 @@ function IngredientUsagePage() {
     if (!confirm("Delete this usage record?")) return;
     const { error } = await supabase.from("ingredient_usage_logs").delete().eq("id", log.id);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "ingredient_usage_logs", record_id: log.id, action: "DELETE", old_values: log }); } catch { /* silent */ }
     toast.success("Deleted");
     qc.invalidateQueries({ queryKey: ["ingredient-usage", logDate] });
   };

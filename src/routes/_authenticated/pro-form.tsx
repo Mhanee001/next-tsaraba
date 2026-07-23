@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FileText, Plus } from "lucide-react";
 import { formatNaira, formatInt, todayISO } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/pro-form")({
   head: () => ({
@@ -80,6 +81,7 @@ function ProFormPage() {
     });
     setSaving(false);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "proforma_orders", action: "INSERT", new_values: { customer_name: form.customer_name.trim(), customer_phone: form.customer_phone || null, product_type_id: form.product_type_id || null, quantity: qty, unit_price: price, total_amount: total, delivery_date: form.delivery_date || null, notes: form.notes || null, logged_by: userData.user?.id ?? null } }); } catch { /* silent */ }
     toast.success("Pro-forma order created");
     setForm({ customer_name: "", customer_phone: "", product_type_id: "", quantity: "", unit_price: "", delivery_date: "", notes: "" });
     setShowForm(false);
@@ -87,8 +89,10 @@ function ProFormPage() {
   };
 
   const updateStatus = async (id: string, status: string) => {
+    const { data: oldOrder } = await supabase.from("proforma_orders").select("*").eq("id", id).single();
     const { error } = await supabase.from("proforma_orders").update({ status }).eq("id", id);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "proforma_orders", record_id: id, action: "UPDATE", old_values: oldOrder ?? undefined, new_values: { status } }); } catch { /* silent */ }
     toast.success(`Order ${status}`);
     qc.invalidateQueries({ queryKey: ["proforma-orders"] });
   };

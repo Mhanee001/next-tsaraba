@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAgentsRouteImport } from './routes/_authenticated/agents'
+import { Route as AuthenticatedAuditLogRouteImport } from './routes/_authenticated/audit-log'
 import { Route as AuthenticatedCashFlowRouteImport } from './routes/_authenticated/cash-flow'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedExpensesRouteImport } from './routes/_authenticated/expenses'
@@ -44,6 +45,11 @@ const AuthRoute = AuthRouteImport.update({
 const AuthenticatedAgentsRoute = AuthenticatedAgentsRouteImport.update({
   id: '/agents',
   path: '/agents',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAuditLogRoute = AuthenticatedAuditLogRouteImport.update({
+  id: '/audit-log',
+  path: '/audit-log',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCashFlowRoute = AuthenticatedCashFlowRouteImport.update({
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agents': typeof AuthenticatedAgentsRouteWithChildren
+  '/audit-log': typeof AuthenticatedAuditLogRoute
   '/cash-flow': typeof AuthenticatedCashFlowRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
@@ -137,6 +144,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agents': typeof AuthenticatedAgentsRouteWithChildren
+  '/audit-log': typeof AuthenticatedAuditLogRoute
   '/cash-flow': typeof AuthenticatedCashFlowRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/agents': typeof AuthenticatedAgentsRouteWithChildren
+  '/_authenticated/audit-log': typeof AuthenticatedAuditLogRoute
   '/_authenticated/cash-flow': typeof AuthenticatedCashFlowRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/expenses': typeof AuthenticatedExpensesRoute
@@ -177,6 +186,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agents'
+    | '/audit-log'
     | '/cash-flow'
     | '/dashboard'
     | '/expenses'
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agents'
+    | '/audit-log'
     | '/cash-flow'
     | '/dashboard'
     | '/expenses'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/agents'
+    | '/_authenticated/audit-log'
     | '/_authenticated/cash-flow'
     | '/_authenticated/dashboard'
     | '/_authenticated/expenses'
@@ -263,6 +275,13 @@ declare module '@tanstack/react-router' {
       path: '/agents'
       fullPath: '/agents'
       preLoaderRoute: typeof AuthenticatedAgentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/audit-log': {
+      id: '/_authenticated/audit-log'
+      path: '/audit-log'
+      fullPath: '/audit-log'
+      preLoaderRoute: typeof AuthenticatedAuditLogRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/cash-flow': {
@@ -372,6 +391,7 @@ const AuthenticatedAgentsRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgentsRoute: typeof AuthenticatedAgentsRouteWithChildren
+  AuthenticatedAuditLogRoute: typeof AuthenticatedAuditLogRoute
   AuthenticatedCashFlowRoute: typeof AuthenticatedCashFlowRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedExpensesRoute: typeof AuthenticatedExpensesRoute
@@ -388,6 +408,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgentsRoute: AuthenticatedAgentsRouteWithChildren,
+  AuthenticatedAuditLogRoute: AuthenticatedAuditLogRoute,
   AuthenticatedCashFlowRoute: AuthenticatedCashFlowRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedExpensesRoute: AuthenticatedExpensesRoute,

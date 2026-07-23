@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Wallet, AlertTriangle } from "lucide-react";
 import { formatNaira, todayISO } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/reconciliation")({
   head: () => ({
@@ -99,6 +100,13 @@ function ReconPage() {
       : await supabase.from("cash_reconciliation").insert(payload);
     setSaving(false);
     if (error) return toast.error(error.message);
+    try {
+      if (existing) {
+        await writeAuditLog({ table_name: "cash_reconciliation", record_id: existing.id, action: "UPDATE", old_values: existing, new_values: payload });
+      } else {
+        await writeAuditLog({ table_name: "cash_reconciliation", action: "INSERT", new_values: payload });
+      }
+    } catch { /* silent */ }
     toast.success(existing ? "Reconciliation updated" : "Reconciliation saved");
     qc.invalidateQueries({ queryKey: ["recon-day", date] });
     qc.invalidateQueries({ queryKey: ["recon-history"] });

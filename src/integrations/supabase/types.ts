@@ -53,6 +53,56 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_logs: {
+        Row: {
+          action: string
+          changed_fields: string[] | null
+          id: string
+          ip_address: string | null
+          new_values: Record<string, unknown> | null
+          old_values: Record<string, unknown> | null
+          performed_at: string
+          performed_by: string | null
+          record_id: string | null
+          table_name: string
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          changed_fields?: string[] | null
+          id?: string
+          ip_address?: string | null
+          new_values?: Record<string, unknown> | null
+          old_values?: Record<string, unknown> | null
+          performed_at?: string
+          performed_by?: string | null
+          record_id?: string | null
+          table_name: string
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          changed_fields?: string[] | null
+          id?: string
+          ip_address?: string | null
+          new_values?: Record<string, unknown> | null
+          old_values?: Record<string, unknown> | null
+          performed_at?: string
+          performed_by?: string | null
+          record_id?: string | null
+          table_name?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_performed_by_fkey"
+            columns: ["performed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cash_flow_entries: {
         Row: {
           amount: number

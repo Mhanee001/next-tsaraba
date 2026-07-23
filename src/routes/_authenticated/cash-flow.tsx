@@ -12,6 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Landmark, Plus, ArrowUpRight, ArrowDownRight, ArrowRightLeft } from "lucide-react";
 import { formatNaira, todayISO } from "@/lib/format";
+import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/cash-flow")({
   head: () => ({
@@ -88,6 +89,7 @@ function CashFlowPage() {
     });
     setSaving(false);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "cash_flow_entries", action: "INSERT", new_values: { entry_date: form.entry_date, type: form.type, category: form.category, amount: Number(form.amount), source_or_destination: form.source_or_destination || null, description: form.description || null, notes: form.notes || null, logged_by: userData.user?.id ?? null } }); } catch { /* silent */ }
     toast.success("Entry saved");
     setForm({ entry_date: today, type: "inflow", category: "sales", amount: "", source_or_destination: "", description: "", notes: "" });
     setShowForm(false);
@@ -102,8 +104,10 @@ function CashFlowPage() {
 
   const remove = async (id: string) => {
     if (!confirm("Delete this entry?")) return;
+    const { data: oldEntry } = await supabase.from("cash_flow_entries").select("*").eq("id", id).single();
     const { error } = await supabase.from("cash_flow_entries").delete().eq("id", id);
     if (error) return toast.error(error.message);
+    try { await writeAuditLog({ table_name: "cash_flow_entries", record_id: id, action: "DELETE", old_values: oldEntry ?? undefined }); } catch { /* silent */ }
     toast.success("Deleted");
     qc.invalidateQueries({ queryKey: ["cash-flow"] });
   };
