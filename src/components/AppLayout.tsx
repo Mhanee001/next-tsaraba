@@ -10,6 +10,11 @@ import {
   Wallet,
   Receipt,
   BarChart3,
+  ClipboardList,
+  FileText,
+  Printer,
+  Landmark,
+  Crown,
   LogOut,
   Menu,
   X,
@@ -24,12 +29,17 @@ import { useQueryClient } from "@tanstack/react-query";
 type NavItem = { to: string; label: string; icon: React.ComponentType<{ className?: string }>; soon?: boolean };
 const NAV: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/managing-director", label: "Executive", icon: Crown },
   { to: "/sales", label: "Sales", icon: ShoppingCart },
   { to: "/agents", label: "Agents", icon: Users },
   { to: "/production", label: "Production", icon: Factory },
-  { to: "/materials", label: "Materials", icon: Package },
+  { to: "/materials", label: "Stock", icon: Package },
+  { to: "/ingredient-usage", label: "Ingredients", icon: ClipboardList },
+  { to: "/pro-form", label: "Pro-forma", icon: FileText },
+  { to: "/printing", label: "Printing", icon: Printer },
   { to: "/expenses", label: "Expenses", icon: Receipt },
   { to: "/reconciliation", label: "Cash", icon: Wallet },
+  { to: "/cash-flow", label: "Cash Flow", icon: Landmark },
   { to: "/reports", label: "Reports", icon: BarChart3 },
 ];
 
