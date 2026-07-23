@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Crown, TrendingUp, TrendingDown, DollarSign, Factory, Package, ShoppingCart, Users, AlertTriangle } from "lucide-react";
-import { formatNaira, formatInt, todayISO } from "@/lib/format";
+import { formatNaira, formatInt, formatNum, todayISO } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/managing-director")({
   head: () => ({
@@ -100,7 +100,7 @@ function ManagingDirectorPage() {
             <StatCard label="Month Revenue" value={formatNaira(stats.revenue)} icon={TrendingUp} sub={`${formatInt(stats.bagsSold)} bags sold`} trend="up" />
             <StatCard label="Cash Collected" value={formatNaira(stats.cash)} icon={DollarSign} sub={`${formatNaira(stats.credit)} on credit`} trend={stats.cash > stats.credit ? "up" : "down"} />
             <StatCard label="Expenses" value={formatNaira(stats.expenseTotal)} icon={TrendingDown} sub={`${formatNaira(stats.commission)} commissions`} trend="down" />
-            <StatCard label="Net Profit" value={formatNaira(stats.profit)} icon={DollarSign} sub={`${stats.margin.toFixed(1)}% margin`} trend={stats.profit >= 0 ? "up" : "down"} />
+            <StatCard label="Net Profit" value={formatNaira(stats.profit)} icon={DollarSign} sub={`${formatNum(stats.margin, 1)}% margin`} trend={stats.profit >= 0 ? "up" : "down"} />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

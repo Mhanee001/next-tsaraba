@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart3, TrendingUp, TrendingDown, DollarSign, Package, Factory } from "lucide-react";
-import { formatNaira, formatInt } from "@/lib/format";
+import { formatNaira, formatInt, formatNum } from "@/lib/format";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell } from "recharts";
 
 export const Route = createFileRoute("/_authenticated/reports")({
@@ -130,7 +130,7 @@ function ReportsPage() {
             {kpi("Revenue", formatNaira(stats.revenue), `${formatInt(stats.bagsSold)} bags sold`)}
             {kpi("Cash collected", formatNaira(stats.cash), `${formatNaira(stats.credit)} credit issued`)}
             {kpi("Expenses", formatNaira(stats.expenseTotal), `${formatNaira(stats.commission)} in commissions`)}
-            {kpi("Net profit", formatNaira(stats.profit), `${stats.margin.toFixed(1)}% margin`)}
+            {kpi("Net profit", formatNaira(stats.profit), `${formatNum(stats.margin, 1)}% margin`)}
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
@@ -142,7 +142,7 @@ function ReportsPage() {
                     <LineChart data={stats.revenueTrend}>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                       <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
-                      <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `₦${(v / 1000).toFixed(0)}k`} />
+                      <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `₦${formatNum(v / 1000, 0)}k`} />
                       <Tooltip formatter={(v: number) => formatNaira(v)} />
                       <Line type="monotone" dataKey="amount" stroke="#2563eb" strokeWidth={2} dot={{ r: 3 }} name="Revenue" />
                     </LineChart>
@@ -180,7 +180,7 @@ function ReportsPage() {
                     <ResponsiveContainer width="100%" height={200}>
                       <BarChart data={stats.topAgents} layout="vertical">
                         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                        <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `₦${(v / 1000).toFixed(0)}k`} />
+                        <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `₦${formatNum(v / 1000, 0)}k`} />
                         <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={90} />
                         <Tooltip formatter={(v: number) => formatNaira(v)} />
                         <Bar dataKey="revenue" fill="#2563eb" radius={[0, 4, 4, 0]} name="Revenue" />
@@ -200,7 +200,7 @@ function ReportsPage() {
                   <div className="flex items-center gap-4">
                     <ResponsiveContainer width="60%" height={220}>
                       <PieChart>
-                        <Pie data={stats.expenseBreakdown.map(([cat, amt]) => ({ name: cat, value: amt }))} cx="50%" cy="50%" outerRadius={80} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                        <Pie data={stats.expenseBreakdown.map(([cat, amt]) => ({ name: cat, value: amt }))} cx="50%" cy="50%" outerRadius={80} dataKey="value" label={({ name, percent }) => `${name} ${formatNum(percent * 100, 0)}%`}>
                           {stats.expenseBreakdown.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                         </Pie>
                         <Tooltip formatter={(v: number) => formatNaira(v)} />

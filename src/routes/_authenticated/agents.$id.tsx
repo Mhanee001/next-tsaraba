@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatNaira } from "@/lib/format";
+import { formatNaira, formatNum } from "@/lib/format";
 import { writeAuditLog } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/agents/$id")({
@@ -111,7 +111,7 @@ function AgentDetail() {
             <Card>
               <CardContent className="p-5">
                 <p className="text-sm text-muted-foreground">Commission rate</p>
-                <p className="mt-1 text-2xl font-semibold">₦{Number(agentQ.data.commission_rate).toFixed(2)}<span className="text-sm text-muted-foreground"> / bag</span></p>
+                <p className="mt-1 text-2xl font-semibold">₦{formatNum(agentQ.data.commission_rate, 2)}<span className="text-sm text-muted-foreground"> / bag</span></p>
               </CardContent>
             </Card>
             <Card>
