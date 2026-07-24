@@ -9,92 +9,98 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedAgentsRouteImport } from './routes/_authenticated/agents'
-import { Route as AuthenticatedAuditLogRouteImport } from './routes/_authenticated/audit-log'
-import { Route as AuthenticatedCashFlowRouteImport } from './routes/_authenticated/cash-flow'
-import { Route as AuthenticatedCashFlowByPersonRouteImport } from './routes/_authenticated/cash-flow-by-person'
-import { Route as AuthenticatedCashSummaryRouteImport } from './routes/_authenticated/cash-summary'
-import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedExpensesRouteImport } from './routes/_authenticated/expenses'
-import { Route as AuthenticatedFactorySalesRouteImport } from './routes/_authenticated/factory-sales'
-import { Route as AuthenticatedIngredientUsageRouteImport } from './routes/_authenticated/ingredient-usage'
-import { Route as AuthenticatedManagingDirectorRouteImport } from './routes/_authenticated/managing-director'
-import { Route as AuthenticatedMaterialsRouteImport } from './routes/_authenticated/materials'
-import { Route as AuthenticatedPrintingRouteImport } from './routes/_authenticated/printing'
-import { Route as AuthenticatedProFormRouteImport } from './routes/_authenticated/pro-form'
-import { Route as AuthenticatedProductionRouteImport } from './routes/_authenticated/production'
-import { Route as AuthenticatedProductionReportRouteImport } from './routes/_authenticated/production-report'
-import { Route as AuthenticatedReconciliationRouteImport } from './routes/_authenticated/reconciliation'
-import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
-import { Route as AuthenticatedSalesRouteImport } from './routes/_authenticated/sales'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedStockInventoryRouteImport } from './routes/_authenticated/stock-inventory'
-import { Route as AuthenticatedAgentsIdRouteImport } from './routes/_authenticated/agents.$id'
+import { Route as AuthenticatedSalesRouteImport } from './routes/_authenticated/sales'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
+import { Route as AuthenticatedReconciliationRouteImport } from './routes/_authenticated/reconciliation'
+import { Route as AuthenticatedProductionReportRouteImport } from './routes/_authenticated/production-report'
+import { Route as AuthenticatedProductionRouteImport } from './routes/_authenticated/production'
+import { Route as AuthenticatedProFormRouteImport } from './routes/_authenticated/pro-form'
+import { Route as AuthenticatedPrintingRouteImport } from './routes/_authenticated/printing'
+import { Route as AuthenticatedMaterialsRouteImport } from './routes/_authenticated/materials'
+import { Route as AuthenticatedManagingDirectorRouteImport } from './routes/_authenticated/managing-director'
+import { Route as AuthenticatedIngredientUsageRouteImport } from './routes/_authenticated/ingredient-usage'
+import { Route as AuthenticatedFactorySalesRouteImport } from './routes/_authenticated/factory-sales'
+import { Route as AuthenticatedExpensesRouteImport } from './routes/_authenticated/expenses'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
+import { Route as AuthenticatedCashSummaryRouteImport } from './routes/_authenticated/cash-summary'
+import { Route as AuthenticatedCashFlowByPersonRouteImport } from './routes/_authenticated/cash-flow-by-person'
+import { Route as AuthenticatedCashFlowRouteImport } from './routes/_authenticated/cash-flow'
+import { Route as AuthenticatedAuditLogRouteImport } from './routes/_authenticated/audit-log'
+import { Route as AuthenticatedAgentsRouteImport } from './routes/_authenticated/agents'
 import { Route as AuthenticatedCustomersIdRouteImport } from './routes/_authenticated/customers.$id'
+import { Route as AuthenticatedAgentsIdRouteImport } from './routes/_authenticated/agents.$id'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAgentsRoute = AuthenticatedAgentsRouteImport.update({
-  id: '/agents',
-  path: '/agents',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedAuditLogRoute = AuthenticatedAuditLogRouteImport.update({
-  id: '/audit-log',
-  path: '/audit-log',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedCashFlowRoute = AuthenticatedCashFlowRouteImport.update({
-  id: '/cash-flow',
-  path: '/cash-flow',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedCashFlowByPersonRoute =
-  AuthenticatedCashFlowByPersonRouteImport.update({
-    id: '/cash-flow-by-person',
-    path: '/cash-flow-by-person',
+const AuthenticatedStockInventoryRoute =
+  AuthenticatedStockInventoryRouteImport.update({
+    id: '/stock-inventory',
+    path: '/stock-inventory',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedCashSummaryRoute =
-  AuthenticatedCashSummaryRouteImport.update({
-    id: '/cash-summary',
-    path: '/cash-summary',
+const AuthenticatedSalesRoute = AuthenticatedSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReconciliationRoute =
+  AuthenticatedReconciliationRouteImport.update({
+    id: '/reconciliation',
+    path: '/reconciliation',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedCustomersRoute = AuthenticatedCustomersRouteImport.update({
-  id: '/customers',
-  path: '/customers',
+const AuthenticatedProductionReportRoute =
+  AuthenticatedProductionReportRouteImport.update({
+    id: '/production-report',
+    path: '/production-report',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProductionRoute = AuthenticatedProductionRouteImport.update({
+  id: '/production',
+  path: '/production',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AuthenticatedProFormRoute = AuthenticatedProFormRouteImport.update({
+  id: '/pro-form',
+  path: '/pro-form',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedExpensesRoute = AuthenticatedExpensesRouteImport.update({
-  id: '/expenses',
-  path: '/expenses',
+const AuthenticatedPrintingRoute = AuthenticatedPrintingRouteImport.update({
+  id: '/printing',
+  path: '/printing',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedFactorySalesRoute =
-  AuthenticatedFactorySalesRouteImport.update({
-    id: '/factory-sales',
-    path: '/factory-sales',
+const AuthenticatedMaterialsRoute = AuthenticatedMaterialsRouteImport.update({
+  id: '/materials',
+  path: '/materials',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedManagingDirectorRoute =
+  AuthenticatedManagingDirectorRouteImport.update({
+    id: '/managing-director',
+    path: '/managing-director',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedIngredientUsageRoute =
@@ -103,64 +109,53 @@ const AuthenticatedIngredientUsageRoute =
     path: '/ingredient-usage',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedManagingDirectorRoute =
-  AuthenticatedManagingDirectorRouteImport.update({
-    id: '/managing-director',
-    path: '/managing-director',
+const AuthenticatedFactorySalesRoute =
+  AuthenticatedFactorySalesRouteImport.update({
+    id: '/factory-sales',
+    path: '/factory-sales',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedMaterialsRoute = AuthenticatedMaterialsRouteImport.update({
-  id: '/materials',
-  path: '/materials',
+const AuthenticatedExpensesRoute = AuthenticatedExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedPrintingRoute = AuthenticatedPrintingRouteImport.update({
-  id: '/printing',
-  path: '/printing',
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedProFormRoute = AuthenticatedProFormRouteImport.update({
-  id: '/pro-form',
-  path: '/pro-form',
+const AuthenticatedCustomersRoute = AuthenticatedCustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedProductionRoute = AuthenticatedProductionRouteImport.update({
-  id: '/production',
-  path: '/production',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedProductionReportRoute =
-  AuthenticatedProductionReportRouteImport.update({
-    id: '/production-report',
-    path: '/production-report',
+const AuthenticatedCashSummaryRoute =
+  AuthenticatedCashSummaryRouteImport.update({
+    id: '/cash-summary',
+    path: '/cash-summary',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedReconciliationRoute =
-  AuthenticatedReconciliationRouteImport.update({
-    id: '/reconciliation',
-    path: '/reconciliation',
+const AuthenticatedCashFlowByPersonRoute =
+  AuthenticatedCashFlowByPersonRouteImport.update({
+    id: '/cash-flow-by-person',
+    path: '/cash-flow-by-person',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
+const AuthenticatedCashFlowRoute = AuthenticatedCashFlowRouteImport.update({
+  id: '/cash-flow',
+  path: '/cash-flow',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedSalesRoute = AuthenticatedSalesRouteImport.update({
-  id: '/sales',
-  path: '/sales',
+const AuthenticatedAuditLogRoute = AuthenticatedAuditLogRouteImport.update({
+  id: '/audit-log',
+  path: '/audit-log',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedStockInventoryRoute =
-  AuthenticatedStockInventoryRouteImport.update({
-    id: '/stock-inventory',
-    path: '/stock-inventory',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedAgentsIdRoute = AuthenticatedAgentsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AuthenticatedAgentsRoute,
+const AuthenticatedAgentsRoute = AuthenticatedAgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCustomersIdRoute =
   AuthenticatedCustomersIdRouteImport.update({
@@ -168,6 +163,11 @@ const AuthenticatedCustomersIdRoute =
     path: '/$id',
     getParentRoute: () => AuthenticatedCustomersRoute,
   } as any)
+const AuthenticatedAgentsIdRoute = AuthenticatedAgentsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedAgentsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -339,11 +339,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -353,137 +353,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/agents': {
-      id: '/_authenticated/agents'
-      path: '/agents'
-      fullPath: '/agents'
-      preLoaderRoute: typeof AuthenticatedAgentsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/audit-log': {
-      id: '/_authenticated/audit-log'
-      path: '/audit-log'
-      fullPath: '/audit-log'
-      preLoaderRoute: typeof AuthenticatedAuditLogRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/cash-flow': {
-      id: '/_authenticated/cash-flow'
-      path: '/cash-flow'
-      fullPath: '/cash-flow'
-      preLoaderRoute: typeof AuthenticatedCashFlowRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/cash-flow-by-person': {
-      id: '/_authenticated/cash-flow-by-person'
-      path: '/cash-flow-by-person'
-      fullPath: '/cash-flow-by-person'
-      preLoaderRoute: typeof AuthenticatedCashFlowByPersonRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/cash-summary': {
-      id: '/_authenticated/cash-summary'
-      path: '/cash-summary'
-      fullPath: '/cash-summary'
-      preLoaderRoute: typeof AuthenticatedCashSummaryRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/customers': {
-      id: '/_authenticated/customers'
-      path: '/customers'
-      fullPath: '/customers'
-      preLoaderRoute: typeof AuthenticatedCustomersRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/expenses': {
-      id: '/_authenticated/expenses'
-      path: '/expenses'
-      fullPath: '/expenses'
-      preLoaderRoute: typeof AuthenticatedExpensesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/factory-sales': {
-      id: '/_authenticated/factory-sales'
-      path: '/factory-sales'
-      fullPath: '/factory-sales'
-      preLoaderRoute: typeof AuthenticatedFactorySalesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/ingredient-usage': {
-      id: '/_authenticated/ingredient-usage'
-      path: '/ingredient-usage'
-      fullPath: '/ingredient-usage'
-      preLoaderRoute: typeof AuthenticatedIngredientUsageRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/managing-director': {
-      id: '/_authenticated/managing-director'
-      path: '/managing-director'
-      fullPath: '/managing-director'
-      preLoaderRoute: typeof AuthenticatedManagingDirectorRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/materials': {
-      id: '/_authenticated/materials'
-      path: '/materials'
-      fullPath: '/materials'
-      preLoaderRoute: typeof AuthenticatedMaterialsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/printing': {
-      id: '/_authenticated/printing'
-      path: '/printing'
-      fullPath: '/printing'
-      preLoaderRoute: typeof AuthenticatedPrintingRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/pro-form': {
-      id: '/_authenticated/pro-form'
-      path: '/pro-form'
-      fullPath: '/pro-form'
-      preLoaderRoute: typeof AuthenticatedProFormRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/production': {
-      id: '/_authenticated/production'
-      path: '/production'
-      fullPath: '/production'
-      preLoaderRoute: typeof AuthenticatedProductionRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/production-report': {
-      id: '/_authenticated/production-report'
-      path: '/production-report'
-      fullPath: '/production-report'
-      preLoaderRoute: typeof AuthenticatedProductionReportRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/reconciliation': {
-      id: '/_authenticated/reconciliation'
-      path: '/reconciliation'
-      fullPath: '/reconciliation'
-      preLoaderRoute: typeof AuthenticatedReconciliationRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/reports': {
-      id: '/_authenticated/reports'
-      path: '/reports'
-      fullPath: '/reports'
-      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+    '/_authenticated/stock-inventory': {
+      id: '/_authenticated/stock-inventory'
+      path: '/stock-inventory'
+      fullPath: '/stock-inventory'
+      preLoaderRoute: typeof AuthenticatedStockInventoryRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/sales': {
@@ -493,19 +374,131 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/stock-inventory': {
-      id: '/_authenticated/stock-inventory'
-      path: '/stock-inventory'
-      fullPath: '/stock-inventory'
-      preLoaderRoute: typeof AuthenticatedStockInventoryRouteImport
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/agents/$id': {
-      id: '/_authenticated/agents/$id'
-      path: '/$id'
-      fullPath: '/agents/$id'
-      preLoaderRoute: typeof AuthenticatedAgentsIdRouteImport
-      parentRoute: typeof AuthenticatedAgentsRoute
+    '/_authenticated/reconciliation': {
+      id: '/_authenticated/reconciliation'
+      path: '/reconciliation'
+      fullPath: '/reconciliation'
+      preLoaderRoute: typeof AuthenticatedReconciliationRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/production-report': {
+      id: '/_authenticated/production-report'
+      path: '/production-report'
+      fullPath: '/production-report'
+      preLoaderRoute: typeof AuthenticatedProductionReportRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/production': {
+      id: '/_authenticated/production'
+      path: '/production'
+      fullPath: '/production'
+      preLoaderRoute: typeof AuthenticatedProductionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pro-form': {
+      id: '/_authenticated/pro-form'
+      path: '/pro-form'
+      fullPath: '/pro-form'
+      preLoaderRoute: typeof AuthenticatedProFormRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/printing': {
+      id: '/_authenticated/printing'
+      path: '/printing'
+      fullPath: '/printing'
+      preLoaderRoute: typeof AuthenticatedPrintingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/materials': {
+      id: '/_authenticated/materials'
+      path: '/materials'
+      fullPath: '/materials'
+      preLoaderRoute: typeof AuthenticatedMaterialsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/managing-director': {
+      id: '/_authenticated/managing-director'
+      path: '/managing-director'
+      fullPath: '/managing-director'
+      preLoaderRoute: typeof AuthenticatedManagingDirectorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ingredient-usage': {
+      id: '/_authenticated/ingredient-usage'
+      path: '/ingredient-usage'
+      fullPath: '/ingredient-usage'
+      preLoaderRoute: typeof AuthenticatedIngredientUsageRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/factory-sales': {
+      id: '/_authenticated/factory-sales'
+      path: '/factory-sales'
+      fullPath: '/factory-sales'
+      preLoaderRoute: typeof AuthenticatedFactorySalesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/expenses': {
+      id: '/_authenticated/expenses'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof AuthenticatedExpensesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/customers': {
+      id: '/_authenticated/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof AuthenticatedCustomersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-summary': {
+      id: '/_authenticated/cash-summary'
+      path: '/cash-summary'
+      fullPath: '/cash-summary'
+      preLoaderRoute: typeof AuthenticatedCashSummaryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-flow-by-person': {
+      id: '/_authenticated/cash-flow-by-person'
+      path: '/cash-flow-by-person'
+      fullPath: '/cash-flow-by-person'
+      preLoaderRoute: typeof AuthenticatedCashFlowByPersonRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-flow': {
+      id: '/_authenticated/cash-flow'
+      path: '/cash-flow'
+      fullPath: '/cash-flow'
+      preLoaderRoute: typeof AuthenticatedCashFlowRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/audit-log': {
+      id: '/_authenticated/audit-log'
+      path: '/audit-log'
+      fullPath: '/audit-log'
+      preLoaderRoute: typeof AuthenticatedAuditLogRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/agents': {
+      id: '/_authenticated/agents'
+      path: '/agents'
+      fullPath: '/agents'
+      preLoaderRoute: typeof AuthenticatedAgentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/customers/$id': {
       id: '/_authenticated/customers/$id'
@@ -513,6 +506,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/customers/$id'
       preLoaderRoute: typeof AuthenticatedCustomersIdRouteImport
       parentRoute: typeof AuthenticatedCustomersRoute
+    }
+    '/_authenticated/agents/$id': {
+      id: '/_authenticated/agents/$id'
+      path: '/$id'
+      fullPath: '/agents/$id'
+      preLoaderRoute: typeof AuthenticatedAgentsIdRouteImport
+      parentRoute: typeof AuthenticatedAgentsRoute
     }
   }
 }
@@ -599,13 +599,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

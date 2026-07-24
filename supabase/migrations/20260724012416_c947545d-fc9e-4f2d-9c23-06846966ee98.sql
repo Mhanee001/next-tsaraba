@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.set_audit_user_id() FROM PUBLIC, anon, authenticated;

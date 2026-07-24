@@ -23,8 +23,8 @@ export async function writeAuditLog(payload: AuditPayload) {
     table_name: payload.table_name,
     record_id: payload.record_id ?? null,
     action: payload.action,
-    old_values: payload.old_values ?? null,
-    new_values: payload.new_values ?? null,
+    old_values: (payload.old_values ?? null) as never,
+    new_values: (payload.new_values ?? null) as never,
     changed_fields: changedFields.length > 0 ? changedFields : null,
   });
 
