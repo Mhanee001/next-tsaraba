@@ -53,101 +53,6 @@ export type Database = {
         }
         Relationships: []
       }
-      audit_logs: {
-        Row: {
-          action: string
-          changed_fields: string[] | null
-          id: string
-          ip_address: string | null
-          new_values: Record<string, unknown> | null
-          old_values: Record<string, unknown> | null
-          performed_at: string
-          performed_by: string | null
-          record_id: string | null
-          table_name: string
-          user_agent: string | null
-        }
-        Insert: {
-          action: string
-          changed_fields?: string[] | null
-          id?: string
-          ip_address?: string | null
-          new_values?: Record<string, unknown> | null
-          old_values?: Record<string, unknown> | null
-          performed_at?: string
-          performed_by?: string | null
-          record_id?: string | null
-          table_name: string
-          user_agent?: string | null
-        }
-        Update: {
-          action?: string
-          changed_fields?: string[] | null
-          id?: string
-          ip_address?: string | null
-          new_values?: Record<string, unknown> | null
-          old_values?: Record<string, unknown> | null
-          performed_at?: string
-          performed_by?: string | null
-          record_id?: string | null
-          table_name?: string
-          user_agent?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "audit_logs_performed_by_fkey"
-            columns: ["performed_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      cash_flow_entries: {
-        Row: {
-          amount: number
-          category: string
-          created_at: string
-          description: string | null
-          entry_date: string
-          id: string
-          logged_by: string | null
-          notes: string | null
-          reference: string | null
-          source_or_destination: string | null
-          type: string
-          updated_at: string
-        }
-        Insert: {
-          amount?: number
-          category: string
-          created_at?: string
-          description?: string | null
-          entry_date?: string
-          id?: string
-          logged_by?: string | null
-          notes?: string | null
-          reference?: string | null
-          source_or_destination?: string | null
-          type: string
-          updated_at?: string
-        }
-        Update: {
-          amount?: number
-          category?: string
-          created_at?: string
-          description?: string | null
-          entry_date?: string
-          id?: string
-          logged_by?: string | null
-          notes?: string | null
-          reference?: string | null
-          source_or_destination?: string | null
-          type?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       cash_reconciliation: {
         Row: {
           actual_cash_at_hand: number
@@ -199,36 +104,6 @@ export type Database = {
         }
         Relationships: []
       }
-      customers: {
-        Row: {
-          id: string
-          name: string
-          phone: string | null
-          location: string | null
-          notes: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          name: string
-          phone?: string | null
-          location?: string | null
-          notes?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          name?: string
-          phone?: string | null
-          location?: string | null
-          notes?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       expenses: {
         Row: {
           amount: number
@@ -261,185 +136,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
-      }
-      factory_sales: {
-        Row: {
-          id: string
-          sale_date: string
-          product: string
-          price_per_loaf: number
-          quantity: number
-          amount: number
-          damage_qty: number
-          damage_amount: number
-          return_qty: number
-          return_amount: number
-          net_quantity: number
-          net_amount: number
-          fuel_cost: number
-          commission_cost: number
-          salary_cost: number
-          notes: string | null
-          logged_by: string | null
-          customer_id: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          sale_date?: string
-          product: string
-          price_per_loaf?: number
-          quantity?: number
-          amount?: number
-          damage_qty?: number
-          damage_amount?: number
-          return_qty?: number
-          return_amount?: number
-          net_quantity?: number
-          net_amount?: number
-          fuel_cost?: number
-          commission_cost?: number
-          salary_cost?: number
-          notes?: string | null
-          logged_by?: string | null
-          customer_id?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          sale_date?: string
-          product?: string
-          price_per_loaf?: number
-          quantity?: number
-          amount?: number
-          damage_qty?: number
-          damage_amount?: number
-          return_qty?: number
-          return_amount?: number
-          net_quantity?: number
-          net_amount?: number
-          fuel_cost?: number
-          commission_cost?: number
-          salary_cost?: number
-          notes?: string | null
-          logged_by?: string | null
-          customer_id?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "factory_sales_customer_id_fkey"
-            columns: ["customer_id"]
-            referencedRelation: "customers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      finished_goods_stock: {
-        Row: {
-          created_at: string
-          id: string
-          low_stock_threshold: number
-          notes: string | null
-          product_type_id: string
-          quantity_in_stock: number
-          unit_price: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          low_stock_threshold?: number
-          notes?: string | null
-          product_type_id: string
-          quantity_in_stock?: number
-          unit_price?: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          low_stock_threshold?: number
-          notes?: string | null
-          product_type_id?: string
-          quantity_in_stock?: number
-          unit_price?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "finished_goods_stock_product_type_id_fkey"
-            columns: ["product_type_id"]
-            isOneToOne: false
-            referencedRelation: "product_types"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      ingredient_usage_logs: {
-        Row: {
-          created_at: string
-          flour_bags: number
-          flour_measure_g: number
-          flour_used_g: number
-          id: string
-          log_date: string
-          notes: string | null
-          preservatives_measure_g: number
-          preservatives_used_g: number
-          product_type_id: string
-          salt_measure_g: number
-          salt_used_g: number
-          sugar_measure_g: number
-          sugar_used_g: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          flour_bags?: number
-          flour_measure_g?: number
-          flour_used_g?: number
-          id?: string
-          log_date?: string
-          notes?: string | null
-          preservatives_measure_g?: number
-          preservatives_used_g?: number
-          product_type_id: string
-          salt_measure_g?: number
-          salt_used_g?: number
-          sugar_measure_g?: number
-          sugar_used_g?: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          flour_bags?: number
-          flour_measure_g?: number
-          flour_used_g?: number
-          id?: string
-          log_date?: string
-          notes?: string | null
-          preservatives_measure_g?: number
-          preservatives_used_g?: number
-          product_type_id?: string
-          salt_measure_g?: number
-          salt_used_g?: number
-          sugar_measure_g?: number
-          sugar_used_g?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "ingredient_usage_logs_product_type_id_fkey"
-            columns: ["product_type_id"]
-            isOneToOne: false
-            referencedRelation: "product_types"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       payroll_records: {
         Row: {
@@ -479,128 +175,6 @@ export type Database = {
           pay_date?: string
           staff_name?: string
           status?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      printing_jobs: {
-        Row: {
-          cost: number
-          created_at: string
-          description: string
-          id: string
-          item_type: string
-          job_date: string
-          logged_by: string | null
-          notes: string | null
-          quantity: number
-          updated_at: string
-          vendor: string | null
-        }
-        Insert: {
-          cost?: number
-          created_at?: string
-          description: string
-          id?: string
-          item_type?: string
-          job_date?: string
-          logged_by?: string | null
-          notes?: string | null
-          quantity?: number
-          updated_at?: string
-          vendor?: string | null
-        }
-        Update: {
-          cost?: number
-          created_at?: string
-          description?: string
-          id?: string
-          item_type?: string
-          job_date?: string
-          logged_by?: string | null
-          notes?: string | null
-          quantity?: number
-          updated_at?: string
-          vendor?: string | null
-        }
-        Relationships: []
-      }
-      proforma_orders: {
-        Row: {
-          created_at: string
-          customer_name: string
-          customer_phone: string | null
-          delivery_date: string | null
-          id: string
-          logged_by: string | null
-          notes: string | null
-          order_date: string
-          product_type_id: string | null
-          quantity: number
-          status: string
-          total_amount: number
-          unit_price: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          customer_name: string
-          customer_phone?: string | null
-          delivery_date?: string | null
-          id?: string
-          logged_by?: string | null
-          notes?: string | null
-          order_date?: string
-          product_type_id?: string | null
-          quantity?: number
-          status?: string
-          total_amount?: number
-          unit_price?: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          customer_name?: string
-          customer_phone?: string | null
-          delivery_date?: string | null
-          id?: string
-          logged_by?: string | null
-          notes?: string | null
-          order_date?: string
-          product_type_id?: string | null
-          quantity?: number
-          status?: string
-          total_amount?: number
-          unit_price?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "proforma_orders_product_type_id_fkey"
-            columns: ["product_type_id"]
-            isOneToOne: false
-            referencedRelation: "product_types"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      product_types: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
           updated_at?: string
         }
         Relationships: []
@@ -646,114 +220,114 @@ export type Database = {
       }
       production_reports: {
         Row: {
-          id: string
-          report_date: string
-          bcnt_used: number
-          bcnt_produced: number
-          top_used: number
-          top_produced: number
-          sup_used: number
-          sup_produced: number
-          exe_used: number
-          exe_produced: number
-          brw_used: number
-          brw_produced: number
-          scnt_used: number
-          scnt_produced: number
-          nat_used: number
-          nat_produced: number
-          mac_used: number
-          mac_produced: number
-          total_used: number
-          total_produced: number
           bakers: number
-          packers: number
-          management: number
-          total_staff: number
           bcnt_damaged: number
-          top_damaged: number
-          sup_damaged: number
-          exe_damaged: number
+          bcnt_produced: number
+          bcnt_used: number
           brw_damaged: number
-          scnt_damaged: number
-          nat_damaged: number
-          mac_damaged: number
-          notes: string | null
+          brw_produced: number
+          brw_used: number
           created_at: string
+          exe_damaged: number
+          exe_produced: number
+          exe_used: number
+          id: string
+          mac_damaged: number
+          mac_produced: number
+          mac_used: number
+          management: number
+          nat_damaged: number
+          nat_produced: number
+          nat_used: number
+          notes: string | null
+          packers: number
+          report_date: string
+          scnt_damaged: number
+          scnt_produced: number
+          scnt_used: number
+          sup_damaged: number
+          sup_produced: number
+          sup_used: number
+          top_damaged: number
+          top_produced: number
+          top_used: number
+          total_produced: number
+          total_staff: number
+          total_used: number
           updated_at: string
         }
         Insert: {
-          id?: string
-          report_date?: string
-          bcnt_used?: number
-          bcnt_produced?: number
-          top_used?: number
-          top_produced?: number
-          sup_used?: number
-          sup_produced?: number
-          exe_used?: number
-          exe_produced?: number
-          brw_used?: number
-          brw_produced?: number
-          scnt_used?: number
-          scnt_produced?: number
-          nat_used?: number
-          nat_produced?: number
-          mac_used?: number
-          mac_produced?: number
-          total_used?: number
-          total_produced?: number
           bakers?: number
-          packers?: number
-          management?: number
-          total_staff?: number
           bcnt_damaged?: number
-          top_damaged?: number
-          sup_damaged?: number
-          exe_damaged?: number
+          bcnt_produced?: number
+          bcnt_used?: number
           brw_damaged?: number
-          scnt_damaged?: number
-          nat_damaged?: number
-          mac_damaged?: number
-          notes?: string | null
+          brw_produced?: number
+          brw_used?: number
           created_at?: string
+          exe_damaged?: number
+          exe_produced?: number
+          exe_used?: number
+          id?: string
+          mac_damaged?: number
+          mac_produced?: number
+          mac_used?: number
+          management?: number
+          nat_damaged?: number
+          nat_produced?: number
+          nat_used?: number
+          notes?: string | null
+          packers?: number
+          report_date?: string
+          scnt_damaged?: number
+          scnt_produced?: number
+          scnt_used?: number
+          sup_damaged?: number
+          sup_produced?: number
+          sup_used?: number
+          top_damaged?: number
+          top_produced?: number
+          top_used?: number
+          total_produced?: number
+          total_staff?: number
+          total_used?: number
           updated_at?: string
         }
         Update: {
-          id?: string
-          report_date?: string
-          bcnt_used?: number
-          bcnt_produced?: number
-          top_used?: number
-          top_produced?: number
-          sup_used?: number
-          sup_produced?: number
-          exe_used?: number
-          exe_produced?: number
-          brw_used?: number
-          brw_produced?: number
-          scnt_used?: number
-          scnt_produced?: number
-          nat_used?: number
-          nat_produced?: number
-          mac_used?: number
-          mac_produced?: number
-          total_used?: number
-          total_produced?: number
           bakers?: number
-          packers?: number
-          management?: number
-          total_staff?: number
           bcnt_damaged?: number
-          top_damaged?: number
-          sup_damaged?: number
-          exe_damaged?: number
+          bcnt_produced?: number
+          bcnt_used?: number
           brw_damaged?: number
-          scnt_damaged?: number
-          nat_damaged?: number
-          mac_damaged?: number
-          notes?: string | null
+          brw_produced?: number
+          brw_used?: number
           created_at?: string
+          exe_damaged?: number
+          exe_produced?: number
+          exe_used?: number
+          id?: string
+          mac_damaged?: number
+          mac_produced?: number
+          mac_used?: number
+          management?: number
+          nat_damaged?: number
+          nat_produced?: number
+          nat_used?: number
+          notes?: string | null
+          packers?: number
+          report_date?: string
+          scnt_damaged?: number
+          scnt_produced?: number
+          scnt_used?: number
+          sup_damaged?: number
+          sup_produced?: number
+          sup_used?: number
+          top_damaged?: number
+          top_produced?: number
+          top_used?: number
+          total_produced?: number
+          total_staff?: number
+          total_used?: number
           updated_at?: string
         }
         Relationships: []
